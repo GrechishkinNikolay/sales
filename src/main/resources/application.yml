@@ -1,1 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/sales_db
+    username: dev_user
+    password: "9r3nKW89"
 
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
