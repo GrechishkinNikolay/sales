@@ -2,6 +2,15 @@ For running postgresql for this project you should run the docker command -
 
 docker run --name sales-postgres-container -e POSTGRES_USER=dev_user -e POSTGRES_PASSWORD=9r3nKW89 -e POSTGRES_DB=sales_db -dp 5432:5432 postgres
 
+Запрос для проставления флага is_promo в Actuals -
+UPDATE actuals
+SET is_promo = true
+WHERE actuals.id IN (
+select a.id
+from actuals a join prices p on a.material_no = p.material_no
+and a.chain_name = p.chain_name
+where abs(a.actual_sales_value) < abs(a.units * p.regular_price_per_unit)
+);
 
 1)	Суть задачи:	в продажах выделить отгрузки по промо и регулярным ценам
 2)	Описание бизнес-процесса:	Компания производитель отгружает свою продукцию 
