@@ -1,8 +1,9 @@
 package com.grechishkin.sales.controllers;
 
+import com.grechishkin.sales.dto.PriceDTO;
 import com.grechishkin.sales.entities.Price;
-import com.grechishkin.sales.repositories.PriceRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.grechishkin.sales.services.PriceService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,50 +16,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FinanceController {
 
-    private final PriceRepository priceRepository;
+
+    private final PriceService priceService;
 
     // Get all prices
     @GetMapping("/")
     public List<Price> getAllPrices() {
-        return priceRepository.findAll();
+        return priceService.getAllPrices();
     }
 
     // Get a specific price by id
     @GetMapping("/{id}")
     public Price getPriceById(@PathVariable(value = "id") Long priceId) {
-        return priceRepository.findById(priceId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Price Id = {}", priceId)));
+        return priceService.getPriceById(priceId);
     }
 
     // Create a new price
     @PostMapping("/")
-    public Price createPrice(@Valid @RequestBody Price price) {
-        return priceRepository.save(price);
+    public Price createPrice(@Valid @RequestBody PriceDTO priceDTO) {
+        return priceService.createPrice(priceDTO);
     }
 
     // Update an existing price
-//    @PutMapping("/{id}")
-//    public Price updatePrice(@PathVariable(value = "id") Long priceId,
-//                             @Valid @RequestBody Price priceDetails) {
-//        Price price = priceRepository.findById(priceId)
-//                .orElseThrow(() -> new EntityNotFoundException(String.format("Price Id = {}", priceId)));
-//
-//        price.setMaterialNo(priceDetails.getMaterialNo());
-//        price.setChainName(priceDetails.getChainName());
-//        price.setRegularPricePerUnit(priceDetails.getRegularPricePerUnit());
-//
-//        Price updatedPrice = priceRepository.save(price);
-//        return updatedPrice;
-//    }
+    @Transactional
+    @PutMapping("/{id}")
+    public Price updatePrice(@PathVariable(value = "id") Long priceId,
+                             @Valid @RequestBody PriceDTO priceDTO) {
+        Price price = priceService.updatePrice(priceId, priceDTO);
+        return price;
+    }
 
     // Delete a price
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePrice(@PathVariable(value = "id") Long priceId) {
-        Price price = priceRepository.findById(priceId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Price Id = {}", priceId)));
-
-        priceRepository.delete(price);
-
+        priceService.deletePrice(priceId);
         return ResponseEntity.ok().build();
     }
 }

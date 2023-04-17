@@ -20,7 +20,8 @@ public class Price {
     private BigInteger id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "material_no",
             referencedColumnName = "material_no",
