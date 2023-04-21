@@ -1,12 +1,10 @@
 package com.grechishkin.sales.controllers;
 
+import com.grechishkin.sales.dto.FilteredActualsDTO;
 import com.grechishkin.sales.entities.Actual;
 import com.grechishkin.sales.services.AnalysisService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -34,10 +32,11 @@ public class AnalysisController {
     }
 
     // Get a specific Actuals
-    @GetMapping("/filtered-actuals")
-    public List<Actual> getActualsByChainNamesAndProductsAndDate(@RequestBody List<String> chainNames,
-                                                                 @RequestBody List<Integer> products,
-                                                                 @RequestBody OffsetDateTime date) {
-        return analysisService.getActualsByChainNamesAndProductsAndDate(chainNames, products, date);
+    @PostMapping("/filtered-actuals")
+    public List<Actual> getActualsByChainNamesAndProductsAndDate(@RequestBody FilteredActualsDTO request) {
+        List<String> chainNames = request.chainNames;
+        List<Integer> productsNumbers = request.productsNumbers;
+        OffsetDateTime date = request.date;
+        return analysisService.getActualsByChainNamesAndProductsAndDate(chainNames, productsNumbers, date);
     }
 }

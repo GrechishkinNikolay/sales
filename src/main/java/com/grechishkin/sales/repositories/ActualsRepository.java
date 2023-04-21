@@ -1,6 +1,7 @@
 package com.grechishkin.sales.repositories;
 
 import com.grechishkin.sales.entities.Actual;
+import com.grechishkin.sales.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +26,6 @@ public interface ActualsRepository extends JpaRepository<Actual, Long> {
 
     List<Actual> findByChainNameInAndProductInAndDate(
             List<String> chainNames,
-            List<Integer> products,
+            List<Product> products,
             OffsetDateTime date);
 }

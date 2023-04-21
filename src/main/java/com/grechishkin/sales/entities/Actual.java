@@ -21,7 +21,8 @@ public class Actual {
     private BigInteger id;
 
     @NotNull
-    @Column(name = "date", columnDefinition = "timestamp with time zone default now()") //TODO "Проверить без columnDefinition"
+    @Column(name = "date", columnDefinition = "timestamp with time zone default now()")
+    //TODO "Проверить без columnDefinition"
     private OffsetDateTime date;
 
     @NotNull
@@ -54,5 +55,5 @@ public class Actual {
 
     @NotNull
     @Column(name = "is_promo", columnDefinition = "boolean default false")
-    private boolean isDeleted = false;
+    private boolean isPromo = false;
 }
