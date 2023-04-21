@@ -8,7 +8,6 @@ import com.grechishkin.sales.repositories.PriceRepository;
 import com.grechishkin.sales.repositories.ProductsRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,11 +59,10 @@ public class PriceService {
     }
 
     @Transactional
-    public ResponseEntity<?> deletePrice(Long priceId) {
+    public void deletePrice(Long priceId) {
         Price price = priceRepository.findById(priceId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Price Id = {}", priceId)));
 
         priceRepository.delete(price);
-        return ResponseEntity.ok().build();
     }
 }

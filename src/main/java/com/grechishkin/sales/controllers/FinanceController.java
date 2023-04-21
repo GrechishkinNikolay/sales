@@ -50,6 +50,6 @@ public class FinanceController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePrice(@PathVariable(value = "id") Long priceId) {
         priceService.deletePrice(priceId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
